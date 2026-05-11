@@ -1,0 +1,57 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "name": "afd5c83e70b3d836c55e",
+  "position": {
+    "x": 1278.0895522388059,
+    "y": 358.20895522388059,
+    "z": 10001,
+    "height": 406.92537313432837,
+    "width": 593.19402985074635,
+    "tabOrder": 10001
+  },
+  "visual": {
+    "visualType": "map",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "tabelonaVendas"
+                    }
+                  },
+                  "Property": "Estado"
+                }
+              },
+              "queryRef": "tabelonaVendas.Estado",
+              "nativeQueryRef": "Estado",
+              "active": true
+            }
+          ]
+        },
+        "Size": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Medidas"
+                    }
+                  },
+                  "Property": "Qtd itens vendidos"
+                }
+              },
+              "queryRef": "Medidas.Qtd itens vendidos",
+              "nativeQueryRef": "Qtd itens vendidos"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

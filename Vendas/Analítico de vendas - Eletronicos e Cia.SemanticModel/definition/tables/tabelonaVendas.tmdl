@@ -1,0 +1,119 @@
+table tabelonaVendas
+	lineageTag: 848fff4d-8b49-4806-9601-9963c8bff4af
+
+	column 'Data da Venda'
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 152d2927-4770-433a-a656-66430517785e
+		summarizeBy: none
+		sourceColumn: Data da Venda
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column Cliente
+		dataType: string
+		lineageTag: a602b3df-57d2-4b59-960f-aad435682a31
+		summarizeBy: none
+		sourceColumn: Cliente
+
+		annotation SummarizationSetBy = Automatic
+
+	column Produto
+		dataType: string
+		lineageTag: 36ac9947-ac79-462b-bac4-3a7702e1a69b
+		summarizeBy: none
+		sourceColumn: Produto
+
+		annotation SummarizationSetBy = Automatic
+
+	column Categoria
+		dataType: string
+		lineageTag: ff6b4aa6-2c01-486b-9db4-d68f4a2d0111
+		summarizeBy: none
+		sourceColumn: Categoria
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Preço Unitário'
+		dataType: double
+		lineageTag: 11472d60-df8f-4a8b-b8f4-4820718746c5
+		summarizeBy: sum
+		sourceColumn: Preço Unitário
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Quantidade
+		dataType: int64
+		formatString: 0
+		lineageTag: 3c2e946d-65a3-45dd-97ee-4399eadf2fdd
+		summarizeBy: sum
+		sourceColumn: Quantidade
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Valor Total'
+		dataType: double
+		lineageTag: de61d559-c691-4d94-9043-afa7771eea12
+		summarizeBy: sum
+		sourceColumn: Valor Total
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Forma de Pagamento'
+		dataType: string
+		lineageTag: 4306834f-0bfd-4536-99f0-7a5b37fb8087
+		summarizeBy: none
+		sourceColumn: Forma de Pagamento
+
+		annotation SummarizationSetBy = Automatic
+
+	column Vendedor
+		dataType: string
+		lineageTag: e979b85b-eea3-4ec2-a906-8cb6e07e392e
+		summarizeBy: none
+		sourceColumn: Vendedor
+
+		annotation SummarizationSetBy = Automatic
+
+	column UF
+		dataType: string
+		lineageTag: 78e8e4ce-04c4-455e-bb5b-72b76023387d
+		summarizeBy: none
+		sourceColumn: UF
+
+		annotation SummarizationSetBy = Automatic
+
+	column Estado
+		dataType: string
+		lineageTag: 28c985cb-d7e0-43d6-8185-0afd98cf1b36
+		summarizeBy: none
+		sourceColumn: Estado
+
+		annotation SummarizationSetBy = Automatic
+
+	partition tabelonaVendas = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("G:\Meu Drive\02 - Documentos digitalizados\02 - Documentos de trabalhos PJ\01 - Oficina do Amanhã\01 - Power BI\02 - Drive alunos\Aula 05\Aula_05_base_vendas_tabelona.xlsx"), null, true),
+				    tabelonaVendas_Sheet = Fonte{[Item="tabelonaVendas",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(tabelonaVendas_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"Data da Venda", type date}, {"Cliente", type text}, {"Produto", type text}, {"Categoria", type text}, {"Preço Unitário", type number}, {"Quantidade", Int64.Type}, {"Valor Total", type number}, {"Forma de Pagamento", type text}, {"Vendedor", type text}, {"Região", type text}}),
+				    #"Dividir Coluna por Delimitador" = Table.SplitColumn(#"Tipo Alterado", "Região", Splitter.SplitTextByDelimiter(",", QuoteStyle.Csv), {"Região.1", "Região.2"}),
+				    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Dividir Coluna por Delimitador",{{"Região.1", type text}, {"Região.2", type text}}),
+				    #"Colunas Renomeadas" = Table.RenameColumns(#"Tipo Alterado1",{{"Região.1", "UF"}, {"Região.2", "Estado"}})
+				in
+				    #"Colunas Renomeadas"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

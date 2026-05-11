@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Analítico de vendas - Eletronicos e Cia"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "ae46d97c-6d07-4a04-a5e8-7fc7f495b294"
+  }
+}

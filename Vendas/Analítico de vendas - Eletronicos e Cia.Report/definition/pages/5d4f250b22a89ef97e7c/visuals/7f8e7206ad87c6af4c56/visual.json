@@ -1,0 +1,44 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "name": "7f8e7206ad87c6af4c56",
+  "position": {
+    "x": 20.059701492537314,
+    "y": 22.92537313432836,
+    "z": 10004,
+    "height": 100.29850746268657,
+    "width": 1851.2238805970151,
+    "tabOrder": 10004
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Analítico de vendas - Eletrônicos e Cia",
+                    "textStyle": {
+                      "fontSize": "36pt"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "center"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

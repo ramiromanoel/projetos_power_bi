@@ -1,0 +1,157 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "name": "4871951ee7a2aac097f0",
+  "position": {
+    "x": 343.8805970149254,
+    "y": 816.71641791044783,
+    "z": 10002,
+    "height": 349.61194029850748,
+    "width": 1034.5074626865671,
+    "tabOrder": 10002
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "tabelonaVendas"
+                    }
+                  },
+                  "Property": "Data da Venda"
+                }
+              },
+              "queryRef": "tabelonaVendas.Data da Venda",
+              "nativeQueryRef": "Data da Venda"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "tabelonaVendas"
+                    }
+                  },
+                  "Property": "Categoria"
+                }
+              },
+              "queryRef": "tabelonaVendas.Categoria",
+              "nativeQueryRef": "Categoria"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "tabelonaVendas"
+                    }
+                  },
+                  "Property": "Produto"
+                }
+              },
+              "queryRef": "tabelonaVendas.Produto",
+              "nativeQueryRef": "Produto"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "tabelonaVendas"
+                        }
+                      },
+                      "Property": "Valor Total"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(tabelonaVendas.Valor Total)",
+              "nativeQueryRef": "Valor Total",
+              "displayName": "Valor Total"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "tabelonaVendas"
+                    }
+                  },
+                  "Property": "Forma de Pagamento"
+                }
+              },
+              "queryRef": "tabelonaVendas.Forma de Pagamento",
+              "nativeQueryRef": "Forma de Pagamento"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "tabelonaVendas"
+                    }
+                  },
+                  "Property": "Estado"
+                }
+              },
+              "queryRef": "tabelonaVendas.Estado",
+              "nativeQueryRef": "Estado"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "tabelonaVendas"
+                    }
+                  },
+                  "Property": "Vendedor"
+                }
+              },
+              "queryRef": "tabelonaVendas.Vendedor",
+              "nativeQueryRef": "Vendedor"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "tabelonaVendas"
+                    }
+                  },
+                  "Property": "Cliente"
+                }
+              },
+              "queryRef": "tabelonaVendas.Cliente",
+              "nativeQueryRef": "Cliente"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'None'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

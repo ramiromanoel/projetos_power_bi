@@ -1,0 +1,62 @@
+table Medidas
+	lineageTag: abb53800-c92f-49de-9484-9855dac6a390
+
+	measure Faturamento = SUM(tabelonaVendas[Valor Total])
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		lineageTag: 3f0404d8-6fa1-488d-920d-233b8edf6360
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Qtd itens vendidos' = SUM(tabelonaVendas[Quantidade])
+		formatString: 0
+		lineageTag: 386f9baf-905a-4811-99ac-48751dac70c5
+
+	measure 'Total de vendedores' = DISTINCTCOUNT(tabelonaVendas[Vendedor])
+		formatString: 0
+		lineageTag: 5fdd4113-5668-4662-828b-e7a64c27e81b
+
+	measure 'Total de clientes' = SUM(tabelonaVendas[Cliente])
+		formatString: 0
+		lineageTag: 093d7593-a987-45f0-821b-9fb691bc8a18
+
+	measure 'Total de categorias' = DISTINCTCOUNT(tabelonaVendas[Categoria])
+		formatString: 0
+		lineageTag: c5023715-aa31-4d7c-b058-b6ab8de1a223
+
+	measure 'Total de produtos' = DISTINCTCOUNT(tabelonaVendas[Produto])
+		formatString: 0
+		lineageTag: 841825b9-e342-46c8-91fd-e509fcfd1e7e
+
+	measure 'Total de vendas' = COUNTROWS(tabelonaVendas)
+		formatString: 0
+		lineageTag: 416c1793-22a0-47b8-9d08-bf717a8954cf
+
+	measure 'Ticket médio' = DIVIDE([Faturamento], [Total de vendas], 0)
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		lineageTag: d3c27ab1-18d5-4369-98e7-abe34d5fbe96
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column Medidas
+		dataType: string
+		isHidden
+		lineageTag: c5eded14-e044-40a7-8ad8-b1eb902203e2
+		summarizeBy: none
+		sourceColumn: Medidas
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Medidas = m
+		mode: import
+		source =
+				let
+				    Fonte = ""
+				in
+				    Fonte
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Text
+

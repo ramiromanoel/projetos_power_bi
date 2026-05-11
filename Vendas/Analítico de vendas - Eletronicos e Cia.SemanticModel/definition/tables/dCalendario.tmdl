@@ -1,0 +1,146 @@
+table dCalendario
+	lineageTag: dcc26ae5-b69b-474f-98b1-25fe7653352b
+
+	column Data
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: f98e55fd-185f-4a6d-818c-8cebfa473d25
+		summarizeBy: none
+		sourceColumn: Data
+
+		variation Variation
+			isDefault
+			relationship: 12a32b8e-5715-4da0-ad40-27cd31cee50f
+			defaultHierarchy: LocalDateTable_eb6165c3-4ebf-41e8-8ed8-35af6ae23be4.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Ano
+		dataType: int64
+		formatString: 0
+		lineageTag: 1e19b173-e252-4b57-b6b2-b452e45447e5
+		summarizeBy: sum
+		sourceColumn: Ano
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mes
+		dataType: int64
+		formatString: 0
+		lineageTag: a7c5c000-dd5d-496b-a8e5-5fc35f481e1c
+		summarizeBy: sum
+		sourceColumn: Mes
+
+		annotation SummarizationSetBy = Automatic
+
+	column Nome_Mes
+		dataType: string
+		lineageTag: 43aa5464-82ce-4885-8935-bde4eb85da73
+		summarizeBy: none
+		sourceColumn: Nome_Mes
+
+		annotation SummarizationSetBy = Automatic
+
+	column Trimestre
+		dataType: int64
+		formatString: 0
+		lineageTag: 2a966d65-ed2c-4723-99e1-c5b62187b1d1
+		summarizeBy: sum
+		sourceColumn: Trimestre
+
+		annotation SummarizationSetBy = Automatic
+
+	column Dia_Semana
+		dataType: int64
+		formatString: 0
+		lineageTag: 0cb5b80e-ed38-4454-b9bf-44e8107023aa
+		summarizeBy: sum
+		sourceColumn: Dia_Semana
+
+		annotation SummarizationSetBy = Automatic
+
+	column Nome_Dia
+		dataType: string
+		lineageTag: 2f73c066-81b9-497a-a972-c6bad0ccd12d
+		summarizeBy: none
+		sourceColumn: Nome_Dia
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ano_Mes
+		dataType: string
+		lineageTag: 0be5712b-7ea6-4176-a177-9cd390238d1f
+		summarizeBy: none
+		sourceColumn: Ano_Mes
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dCalendario = m
+		mode: import
+		source =
+				let
+				    // ========================
+				    // DEFINIÇÃO DA FONTE E CONFIGURAÇÃO
+				    // ========================
+				
+				    // Nome da tabela fato usada como base
+				    Fonte = tabelonaVendas,
+				
+				    // Nome da coluna de data a ser utilizada (altere aqui conforme necessário)
+				    NomeColunaData = "Data da Venda",
+				
+				
+				    // ========================
+				    // PRÉ-PROCESSAMENTO DAS DATAS
+				    // ========================
+				
+				    // Remove linhas com valor nulo na coluna de data
+				    DatasValidas = Table.SelectRows(Fonte, each Record.Field(_, NomeColunaData) <> null),
+				
+				    // Converte datetime para date, se necessário
+				    ColunaDataSomente = Table.TransformColumns(DatasValidas, {{NomeColunaData, DateTime.Date, type date}}),
+				
+				    // Seleciona apenas a coluna de data
+				    ApenasDatas = Table.SelectColumns(ColunaDataSomente, {NomeColunaData}),
+				
+				    // Remove datas duplicadas
+				    DatasUnicas = Table.Distinct(ApenasDatas),
+				
+				    // Armazena valores mínimo e máximo de data
+					DataMinima = List.Min(Table.Column(DatasUnicas, NomeColunaData)),
+					DataMaxima = List.Max(Table.Column(DatasUnicas, NomeColunaData)),
+				
+				
+				    // ========================
+				    // CRIAÇÃO DA TABELA CALENDÁRIO
+				    // ========================
+				
+				    // Gera lista de datas do menor ao maior valor encontrado
+				    ListaDatas = List.Dates(DataMinima, Duration.Days(DataMaxima - DataMinima) + 1, #duration(1, 0, 0, 0)),
+				
+				    // Converte a lista em tabela
+				    TabelaDatas = Table.FromList(ListaDatas, Splitter.SplitByNothing(), {"Data"}),
+				
+				
+				    // ========================
+				    // ENRIQUECIMENTO COM ATRIBUTOS DE DATA
+				    // ========================
+				
+				    AdicionaAno = Table.AddColumn(TabelaDatas, "Ano", each Date.Year([Data]), Int64.Type),
+				    AdicionaMes = Table.AddColumn(AdicionaAno, "Mes", each Date.Month([Data]), Int64.Type),
+				    AdicionaNomeMes = Table.AddColumn(AdicionaMes, "Nome_Mes", each Date.ToText([Data], "MMMM"), type text),
+				    AdicionaTrimestre = Table.AddColumn(AdicionaNomeMes, "Trimestre", each Date.QuarterOfYear([Data]), Int64.Type),
+				    AdicionaDiaSemana = Table.AddColumn(AdicionaTrimestre, "Dia_Semana", each Date.DayOfWeek([Data]), Int64.Type),
+				    AdicionaNomeDia = Table.AddColumn(AdicionaDiaSemana, "Nome_Dia", each Date.ToText([Data], "dddd"), type text),
+				    AdicionaAnoMes = Table.AddColumn(AdicionaNomeDia, "Ano_Mes", each Text.From(Date.Year([Data])) & "-" & Text.PadStart(Text.From(Date.Month([Data])), 2, "0"), type text),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(AdicionaAnoMes,{{"Data", type date}})
+				
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

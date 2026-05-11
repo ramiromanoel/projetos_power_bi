@@ -1,0 +1,22 @@
+model Model
+	culture: pt-BR
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: pt-BR
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["tabelonaVendas","dCalendario","Medidas"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table tabelonaVendas
+ref table DateTableTemplate_ac961706-04b6-471a-a53f-5497f28b306f
+ref table dCalendario
+ref table LocalDateTable_eb6165c3-4ebf-41e8-8ed8-35af6ae23be4
+ref table Medidas
+
+ref cultureInfo pt-BR
+
